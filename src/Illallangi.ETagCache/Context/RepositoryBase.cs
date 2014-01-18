@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Data.SQLite;
-using Ninject.Extensions.Logging;
+using Illallangi.LiteOrm;
 
-namespace Illallangi.FlightLog.Context
+namespace Illallangi.ETagCache.Context
 {
-    using Illallangi.ETagCache.Context;
-    using Illallangi.LiteOrm;
+    using Common.Logging;
 
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
         #region Fields
 
         /// <summary>
-        /// Holds the current value of the Logger property.
+        /// Holds the current value of the Log property.
         /// </summary>
-        private readonly ILogger currentLogger;
+        private readonly ILog currentLog;
 
         /// <summary>
         /// Holds the current value of the ConnectionSource property.
@@ -25,9 +24,9 @@ namespace Illallangi.FlightLog.Context
 
         #region Constructors
 
-        protected RepositoryBase(ILogger logger, IConnectionSource connectionSource)
+        protected RepositoryBase(ILog log, IConnectionSource connectionSource)
         {
-            this.currentLogger = logger;
+            this.currentLog = log;
             this.currentConnectionSource = connectionSource;
         }
 
@@ -37,9 +36,9 @@ namespace Illallangi.FlightLog.Context
 
         #region Protected Properties
 
-        protected ILogger Logger
+        protected ILog Log
         {
-            get { return this.currentLogger; }
+            get { return this.currentLog; }
         }
 
         #endregion

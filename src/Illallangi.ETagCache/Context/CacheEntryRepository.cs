@@ -1,23 +1,23 @@
 ﻿using System.Collections.Generic;
 using Illallangi.ETagCache.Model;
-using Illallangi.FlightLog.Context;
 using Illallangi.LiteOrm;
-using Ninject.Extensions.Logging;
 
 namespace Illallangi.ETagCache.Context
 {
     using System.Linq;
 
+    using Common.Logging;
+
     public sealed class CacheEntryRepository : RepositoryBase<CacheEntry>
     {
-        public CacheEntryRepository(ILogger logger, IConnectionSource connectionSource)
-            : base(logger, connectionSource)
+        public CacheEntryRepository(ILog log, IConnectionSource connectionSource)
+            : base(log, connectionSource)
         {
         }
 
         public override CacheEntry Create(CacheEntry obj)
         {
-            this.Logger.Debug(@"CacheEntryRepository.Create(""{0}"")", obj);
+            this.Log.DebugFormat(@"CacheEntryRepository.Create(""{0}"")", obj);
 
             var id = this.GetConnection()
                 .InsertInto("CacheEntries")
@@ -31,7 +31,7 @@ namespace Illallangi.ETagCache.Context
 
         public override IEnumerable<CacheEntry> Retrieve(CacheEntry obj = null)
         {
-            this.Logger.Debug(@"CacheEntryRepository.Retrieve(""{0}"")", obj);
+            this.Log.DebugFormat(@"CacheEntryRepository.Retrieve(""{0}"")", obj);
 
             return this.GetConnection()
                 .Select<CacheEntry>("CacheEntries")
