@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Illallangi.ETagCache</id>
+    <version>$version$</version>
+    <title>ETag Cache</title>
+    <authors>Illallangi Enterprises</authors>
+    <owners>Illallangi Enterprises</owners>
+    <projectUrl>http://illallangi.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A Cache used for ETag tagged HTTP requests</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>ETag</tags>
+    <dependencies>
+      <dependency id="Illallangi.LiteOrm" version="1.0.3" />
+      <dependency id="log4net" version="1.2.11" />
+      <dependency id="Ninject" version="3.0.1.10" />
+      <dependency id="Ninject.Extensions.Logging" version="3.0.1.0" />
+      <dependency id="Ninject.Extensions.Logging.Log4net" version="3.0.1.0" />
+      <dependency id="System.Data.SQLite" version="1.0.90.0" />
+    </dependencies>
+  </metadata>
+</package>
