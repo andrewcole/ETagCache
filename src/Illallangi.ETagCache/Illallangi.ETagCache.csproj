@@ -35,9 +35,18 @@
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Illallangi.LiteOrm, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Illallangi.LiteOrm, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Illallangi.LiteOrm.1.0.7\lib\Illallangi.LiteOrm.dll</HintPath>
+      <HintPath>..\packages\Illallangi.LiteOrm.1.0.11\lib\Illallangi.LiteOrm.dll</HintPath>
+    </Reference>
+    <Reference Include="Illallangi.RestClient">
+      <HintPath>..\packages\Illallangi.RestClient.1.0.7\lib\Illallangi.RestClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -55,20 +64,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tavis.UriTemplates">
+      <HintPath>..\packages\Tavis.UriTemplates.0.4\lib\Net35\Tavis.UriTemplates.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ValueElement.cs" />
     <Compile Include="Config\ValueElementCollection.cs" />
     <Compile Include="Context\CacheEntryRepository.cs" />
-    <Compile Include="Context\IRepository.cs" />
-    <Compile Include="Context\RepositoryBase.cs" />
     <Compile Include="Model\CacheEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Illallangi.ETagCache.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

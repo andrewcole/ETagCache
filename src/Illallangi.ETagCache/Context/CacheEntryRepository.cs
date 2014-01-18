@@ -1,55 +1,67 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using Common.Logging;
 using Illallangi.ETagCache.Model;
 using Illallangi.LiteOrm;
 
 namespace Illallangi.ETagCache.Context
 {
-    using System.Linq;
-
-    using Common.Logging;
-
-    public sealed class CacheEntryRepository : RepositoryBase<CacheEntry>
+    public sealed class CacheEntryRepository : SQLiteContextBase, IRestCache
     {
-        public CacheEntryRepository(ILog log, IConnectionSource connectionSource)
-            : base(log, connectionSource)
+        private const string DatabasePath = @"%localappdata%\Illallangi Enterprises\ETagCache.dat";
+
+        private const string SqlSchema =
+            @"CREATE TABLE CacheEntries (CacheEntryId INTEGER PRIMARY KEY AUTOINCREMENT, BaseUrl TEXT NOT NULL, Resource TEXT NOT NULL, ETag TEXT NOT NULL, Content TEXT NOT NULL, Unique (BaseUrl, Resource));";
+
+        public CacheEntryRepository(ILog log = null)
+            : base(CacheEntryRepository.DatabasePath, sqlSchemaLines: new[] { CacheEntryRepository.SqlSchema }, log: log)
         {
         }
 
-        public override CacheEntry Create(CacheEntry obj)
+        public void Create(string baseUrl, string resource, string eTag, string content)
         {
-            this.Log.DebugFormat(@"CacheEntryRepository.Create(""{0}"")", obj);
+            this.Log.DebugFormat(
+                @"CacheEntryRepository.Create(baseUrl=""{0}"", resource=""{1}"", eTag=""{2}"", content=""{3}"")",
+                baseUrl,
+                resource,
+                eTag,
+                content);
 
-            var id = this.GetConnection()
+            this.GetConnection()
                 .InsertInto("CacheEntries")
-                .Values("ETag", obj.ETag)
-                .Values("Resource", obj.Resource)
-                .Values("Value", obj.Value)
+                .Values("BaseUrl", baseUrl)
+                .Values("Resource", resource)
+                .Values("ETag", eTag)
+                .Values("Content", content)
                 .Go();
-
-            return this.Retrieve(new CacheEntry { Id = id }).Single();
         }
 
-        public override IEnumerable<CacheEntry> Retrieve(CacheEntry obj = null)
+        public IRestCacheEntry Retrieve(string baseUrl, string resource)
         {
-            this.Log.DebugFormat(@"CacheEntryRepository.Retrieve(""{0}"")", obj);
+            this.Log.DebugFormat(
+                @"CacheEntryRepository.Retrieve(baseUrl=""{0}"", resource=""{1}"")",
+                baseUrl,
+                resource);
 
             return this.GetConnection()
                 .Select<CacheEntry>("CacheEntries")
-                .Column("CacheEntryId", (cacheEntry, value) => cacheEntry.Id = value, null == obj ? null : obj.Id)
+                .Column("CacheEntryId", (cacheEntry, value) => cacheEntry.Id = value)
+                .Column("BaseUrl", (cacheEntry, value) => cacheEntry.BaseUrl = value, baseUrl)
+                .Column("Resource", (cacheEntry, value) => cacheEntry.Resource = value, resource)
                 .Column("ETag", (cacheEntry, value) => cacheEntry.ETag = value)
-                .Column("Resource", (cacheEntry, value) => cacheEntry.Resource = value, null == obj ? null : obj.Resource)
-                .Column("Value", (cacheEntry, value) => cacheEntry.Value = value)
+                .Column("Content", (cacheEntry, value) => cacheEntry.Content = value)
+                .Go()
+                .SingleOrDefault();
+        }
+
+        public void Delete(IRestCacheEntry cache)
+        {
+            this.GetConnection()
+                .DeleteFrom("CacheEntries")
+                .Where("BaseUrl", cache.BaseUrl)
+                .Where("Content", cache.Content)
+                .Where("ETag", cache.ETag)
+                .Where("Resource", cache.Resource)
                 .Go();
-        }
-
-        public override CacheEntry Update(CacheEntry obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Delete(CacheEntry obj)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
