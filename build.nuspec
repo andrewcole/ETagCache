@@ -13,8 +13,8 @@
     <tags>ETag</tags>
     <dependencies>
       <dependency id="Common.Logging" version="2.0.0" />
-      <dependency id="Illallangi.LiteOrm" version="1.0.13" />
-      <dependency id="Illallangi.RestClient" version="1.0.8" />
+      <dependency id="Illallangi.LiteOrm" version="1.0.20" />
+      <dependency id="Illallangi.RestClient" version="1.0.9" />
       <dependency id="Newtonsoft.Json" version="5.0.8" />
       <dependency id="RestSharp" version="104.4.0" />
       <dependency id="System.Data.SQLite" version="1.0.90.0" />
